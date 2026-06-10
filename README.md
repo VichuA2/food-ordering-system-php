@@ -1,47 +1,158 @@
-# Foodie - Enterprise Standard Online Food Delivery System
+# Laravel User & Blog CRUD Application
 
-FoodiEats is a highly scalable, real-world standard Online Food Delivery platform (similar to Zomato or Swiggy) built using **Laravel**. The architecture follows industry-best practices, decoupling heavy operations into background queues, enforcing data integrity via transactional safety layers, and isolating security parameters using enterprise-level Role-Based Access Control (RBAC).
+A Laravel application with User and Blog CRUD operations, built with Laravel UI (Bootstrap). Includes role-based access control (RBAC) using Spatie Laravel Permission package.
 
-## 🚀 Key Architectural Features
+## Requirements
 
-### 🔐 1. Multi-Role RBAC (Role-Based Access Control)
-The entire backend ecosystem is protected and governed by 5 strict operational user roles managed via the `Spatie Roles & Permissions` package:
-- **Admin:** Master coordinator tracking dashboard financial metrics (total orders, revenues), onboarding vendors/riders for safety, and managing global food categories.
-- **Employee:** Handles customer care, interacts with support tickets, and manages user logs.
-- **Hotel Owner (Vendor):** Manages specific restaurant branch inventories, configures real-time menus, tracks items sold, and reviews transaction breakdowns.
-- **Delivery Person:** Accepts/updates live orders, routes delivery paths, and logs tracking states (Pending, Accepted, Picked Up, Delivered).
-- **Customer:** Browses hotels, dynamically customizes food cart structures, tracks multi-vendor split-orders, and logs support tickets.
+- XAMPP (includes PHP >= 8.2 and MySQL)
+- Composer
 
-### 🛒 2. Advanced E-Commerce Core & Price Locking Engine
-- **Persistent DB-Based Cart:** Engineered with `carts` and `cart_items` schemas to allow persistent customer sessions across multiple devices.
-- **Transactional Price Locking:** When an order is checked out, snapshots of item costs are locked down into the transactional logs (`order_items`). If a hotel updates menu prices later, historical financial audit records remain untouched.
-- **Multi-Vendor Split Checkout:** Capability to process mixed shopping carts seamlessly by splitting orders based on vendor/hotel boundaries.
+## Installation
 
-### 📨 3. Intelligent Event & Communication Layer
-To guarantee top performance, heavy system operations are completely decoupled from the main request-response lifecycle using background worker queues.
-- **Automated HTML Email Workflows:** Dispatches professional notification templates step-by-step:
-  - *Order Placed* to Customer.
-  - *New Order Notification* to Vendor.
-  - *New Order Delivery Request* to Delivery Execs.
-  - *Live State Updates* to Customer.
-- **Support & Incident Automation:** Built-in ticketing systems (`queries`) to track user feedback and customer queries assigned to employees.
+### 1. Extract the project zip file
 
----
+1. **Clone this Repository** to your XAMPP `htdocs` directory:
+   - **Windows**: `C:\xampp\htdocs\`
+   - **macOS/Linux**: `/Applications/XAMPP/htdocs/` or your XAMPP installation path
 
-## 🛠️ Tech Stack & Dev Tools
+2. **Rename the extracted folder** (if needed) to your preferred project name (e.g., `laravel-app`)
 
-- **Backend Framework:** PHP Laravel (v13.x / v11.x depending on your version) & Eloquent ORM
-- **Database:** MySQL (Relational mappings, Pivot links, and SoftDeletes enabled)
-- **Security & RBAC:** Spatie Roles and Permissions
-- **Validation Engine:** Segregated Form Requests (`StoreProductRequest`, `UpdateProductRequest`) to isolate core business rules from controllers.
-- **Optimization:** Global View Composers for persistent state data rendering (e.g., universal dynamic cart counts).
-- **Diagnostics Tools:** Laravel Telescope & Laravel Debugbar integrated for profiling database queries (resolving N+1 issues) and auditing background entries.
-- **Frontend Template:** Bootstrap-driven responsive UI integration (Yummy Blade Templates layout system).
+3. **Open a terminal/command prompt** and navigate to the project directory:
+   ```bash
+   cd C:\xampp\htdocs\laravel-app
+   ```
+   Or on macOS/Linux:
+   ```bash
+   cd /Applications/XAMPP/htdocs/laravel-app
+   ```
 
----
+### 2. Install PHP dependencies
 
-## 🗄️ Database Blueprints & Models
+```bash
+composer install
+```
 
-The architecture relies on high-integrity data mappings:
-- **Core Entities:** `User`, `Category`, `Hotel`, `Product` (with image storage paths), `Cart`, `CartItem`, `Order`, `OrderItem`, `Payment` (supporting COD vs Online state tracking), and `Query`.
-- **Relational Integrity:** Fully defined Eloquent relationships (`belongsTo`, `hasMany`, and polymorphic pivot linkages for dynamic food mapping)
+### 3. Start XAMPP services
+
+1. **Open XAMPP Control Panel**
+2. **Start Apache** (click the "Start" button)
+3. **Start MySQL** (click the "Start" button)
+
+### 4. Environment setup
+
+Copy the `.env.example` file to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Update the `.env` file with your MySQL database credentials. For XAMPP, use these default settings:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_app
+DB_USERNAME=root
+DB_PASSWORD=
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your_mail_address
+MAIL_PASSWORD=app_password_your_mail_address
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=your_mail_address
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+
+
+> **Note**: XAMPP's default MySQL username is `root` with no password. If you've set a password, update `DB_PASSWORD` accordingly.
+
+### 5. Generate application key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Database setup
+
+Create a MySQL database using phpMyAdmin:
+
+1. **Open phpMyAdmin** in your browser: `http://localhost/phpmyadmin`
+2. **Click on "New"** in the left sidebar
+3. **Enter database name**: `laravel_app` (or the name you used in `.env`)
+4. **Click "Create"**
+
+Alternatively, you can create the database using SQL:
+
+1. Go to the **SQL** tab in phpMyAdmin
+2. Run this command:
+   ```sql
+   CREATE DATABASE laravel_app;
+   ```
+
+Make sure the database name matches the `DB_DATABASE` value in your `.env` file (see step 4).
+
+### 7. Run migrations
+
+```bash
+php artisan migrate
+```
+
+### 8. Seed the database (recommended)
+
+This will create roles, permissions, admin user, sample users, and articles:
+
+```bash
+php artisan db:seed
+```
+
+Or run migrations and seed together:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+**Note**: After seeding, 
+you can login with admin account:
+- **Email**: `admin@gmail.com`
+- **Password**: `12345678`
+
+you can login with Employee account:
+- **Email**: `employee@gmail.com`
+- **Password**: `12345678`
+
+you can login with Hotel Owner account:
+- **Email**: `hotel@gmail.com`
+- **Password**: `12345678`
+
+you can login with Delivery Person account:
+- **Email**: `delivery@gmail.com`
+- **Password**: `12345678`
+
+you can login with User account:
+- **Email**: `user@gmail.com`
+- **Password**: `12345678`
+
+The seeder creates:
+- **Roles**: Admin: Full system access (All permissions), Employee: Manage users, queries, and registered hotels, Hotel Owner: Manage products for their hotels and view sales reports, Delivery Person: Manage and update assigned delivery orders, Customer: Place orders, browse hotels, and manage profile.
+- **Permissions**: Comprehensive CRUD permissions for: User Management (Customers, Hotel Owners, Delivery Persons), Hotel Management (Listings and Details), Menu & Product Management (Categories and Food Items), Order Processing (Checkout and Status Tracking), Support & Communication (Customer Queries and Notifications)
+- **Sample Data**: Pre-configured dummy accounts for all roles (Admin, Owner, Delivery, Customer) for immediate system testing. Sample hotels, food categories, and initial product listings to visualize the storefront.
+## Running the Application
+
+### Start the development server
+
+```bash
+php artisan serve
+php artisan queue:work 
+php artisan schedule:work
+```
+
+
+The application will be available at `http://localhost:8000`
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

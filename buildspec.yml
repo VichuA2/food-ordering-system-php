@@ -6,9 +6,8 @@ phases:
       - echo Logging into Amazon ECR...
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 782208973532.dkr.ecr.ap-south-1.amazonaws.com
 
-      - REPOSITORY_URI=782208973532.dkr.ecr.ap-south-1.amazonaws.com/vishnu-manual-php-ecr
-
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - export REPOSITORY_URI=782208973532.dkr.ecr.ap-south-1.amazonaws.com/vishnu-manual-php-ecr
+      - export IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
   build:
     commands:
