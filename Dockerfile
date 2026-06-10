@@ -1,14 +1,8 @@
 FROM php:8.3-apache
 
 RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    zip \
-    curl \
-    libzip-dev \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
+    git unzip zip curl \
+    libzip-dev libpng-dev libonig-dev libxml2-dev \
     default-mysql-client \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
@@ -19,7 +13,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
 
 WORKDIR /var/www/html
 
-COPY . .
+COPY food-app/ .
+
+COPY food-app/apache.conf /etc/apache2/sites-available/000-default.conf
 
 RUN composer install --no-dev --optimize-autoloader
 
@@ -31,8 +27,6 @@ RUN cp .env.example .env || true
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 RUN a2enmod rewrite
-
-COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80
 
