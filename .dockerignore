@@ -1,0 +1,12 @@
+.git
+.github
+
+food-app/node_modules
+food-app/vendor
+
+food-app/.env
+
+food-app/storage/logs
+food-app/storage/framework/cache
+food-app/storage/framework/sessions
+food-app/storage/framework/views
