@@ -19,8 +19,7 @@ COPY food-app/apache.conf /etc/apache2/sites-available/000-default.conf
 
 RUN composer install \
     --no-dev \
-    --optimize-autoloader \
-    --no-scripts
+    --optimize-autoloader 
 
 RUN npm install && npm run build
 
@@ -37,4 +36,4 @@ RUN a2enmod rewrite
 
 EXPOSE 80
 
-CMD ["sh","-c","php artisan config:clear && php artisan migrate --force && apache2-foreground"]
+CMD ["sh","-c","php artisan config:clear && php artisan migrate --force && php artisan db:seed --class=RolePermissionSeeder --force && apache2-foreground"]
