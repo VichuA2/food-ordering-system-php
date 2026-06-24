@@ -31,6 +31,11 @@ RUN cp .env.example .env || true
 RUN chown -R www-data:www-data storage bootstrap/cache
 RUN a2enmod rewrite
 
+# Force Apache to write to real files instead of stdout/stderr pipes
+RUN rm -f /var/log/apache2/access.log /var/log/apache2/error.log \
+    && touch /var/log/apache2/access.log /var/log/apache2/error.log \
+    && chmod 666 /var/log/apache2/access.log /var/log/apache2/error.log
+
 # CW Agent config
 COPY cwagent-config.json /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
 
