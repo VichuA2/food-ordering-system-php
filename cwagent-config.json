@@ -4,19 +4,19 @@
       "files": {
         "collect_list": [
           {
-            "file_path": "/var/log/apache2/access.log",
+            "file_path": "/shared/apache/access.log",
             "log_group_name": "/ecs/vishnu-manual-php-task",
             "log_stream_name": "apache-access",
             "timezone": "UTC"
           },
           {
-            "file_path": "/var/log/apache2/error.log",
+            "file_path": "/shared/apache/error.log",
             "log_group_name": "/ecs/vishnu-manual-php-task",
             "log_stream_name": "apache-error",
             "timezone": "UTC"
           },
           {
-            "file_path": "/var/www/html/storage/logs/laravel.log",
+            "file_path": "/shared/laravel/laravel.log",
             "log_group_name": "/ecs/vishnu-manual-php-task",
             "log_stream_name": "laravel-app",
             "timezone": "UTC"
