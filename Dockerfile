@@ -35,4 +35,4 @@ RUN a2enmod rewrite
 COPY cwagent-config.json /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
 
 EXPOSE 80
-CMD ["sh", "-c", "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s && php artisan config:clear && php artisan migrate --force && apache2-foreground"]
+CMD ["sh", "-c", "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m auto -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s & php artisan config:clear && php artisan migrate --force && apache2-foreground"]
