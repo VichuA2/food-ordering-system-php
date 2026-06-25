@@ -4,11 +4,8 @@ set -e
 echo "Starting CloudWatch Agent..."
 
 # Start CloudWatch Agent
-/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
--a fetch-config \
--m auto \
--c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json \
--s
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent \
+-config /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json &
 
 echo "Preparing Laravel..."
 
